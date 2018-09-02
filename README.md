@@ -18,3 +18,6 @@ and a longer post on his pi cluster here https://blog.alexellis.io/serverless-ku
 
 * openfaas
 
+#### DNS + Virgin Media
+
+if you don't override default DNS servers on virgin media, their awful DNS hijacking will prevent a lot of k8s resources from resolving correctly, so make sure you have a sane DNS config
