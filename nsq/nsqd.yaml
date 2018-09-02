@@ -1,0 +1,51 @@
+apiVersion: apps/v1beta2
+kind: DaemonSet
+metadata:
+  name: nsqd
+  labels:
+    app: nsqd
+spec:
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: nsqd
+  template:
+    metadata:
+      labels:
+        app: nsqd
+    spec:
+      imagePullSecrets:
+      - name: registrykey
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: nsqd
+        image: mhlg/rpi-nsq:1.0.2
+        resources:
+          requests:
+            memory: 500M
+        securityContext:
+          privileged: true
+        args:
+        - "nsqd"
+        - "-lookupd-tcp-address=nsqlookupd-0.nsqlookupd:4160"
+        - "-max-body-size=5123840"
+        - "-max-msg-size=25165824"
+        - "-e2e-processing-latency-percentile=1.0,0.99,0.95"
+        ports:
+        - containerPort: 4150
+          hostPort: 4150
+          protocol: TCP
+          name: nsqd-tcp
+        - containerPort: 4151
+          hostPort: 4151
+          protocol: TCP
+          name: nsqd-http
+        volumeMounts:
+        - name: spool
+          mountPath: /var/spool/nsq
+      volumes:
+      - name: spool
+        hostPath:
+          path: /var/spool/nsq
