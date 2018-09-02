@@ -2,7 +2,7 @@
 
 initially this repo is going to be tracking my progress and saving utilities, eventually i'd like to turn it into a proper guide and resource center.
 
-![a stack of pis connected to a router](images/cluster.jpg)
+![a stack of pis connected to a router](images/cluster.png)
 
 #### Setup
 
